@@ -1,30 +1,23 @@
 import { initializeApp } from 'firebase/app';
-import {
-  getAuth,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAYiAveMtikdjmzZZElIpU3JtC6jhZ5Ir0',
-  authDomain: 'test-a7eb1.firebaseapp.com',
-  projectId: 'test-a7eb1',
-  storageBucket: 'test-a7eb1.appspot.com',
-  messagingSenderId: '108754172215',
-  appId: '1:108754172215:web:f984d50e5a6356ebd482b2',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
-const auth = getAuth();
+const auth = getAuth(app);
 
 export const authProvider = async (provider: string) => {
-  const providerSelected =
-    provider === 'google' ? googleProvider : githubProvider;
+  const providerSelected = provider === 'google' ? googleProvider : githubProvider;
 
   try {
     const response = await signInWithPopup(auth, providerSelected);
